@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plants and Nature — Classroom Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="presentation-app">
+    <!-- Living Ambient Background & Continuous Leaves Canvas -->
+    <div class="bg-ambient-layer"></div>
+    <canvas id="leavesCanvas" class="leaves-canvas"></canvas>
+
+    <!-- TOP BAR -->
+    <header class="top-nav">
+      <div class="top-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22v-9"/>
+            <path d="M9 13a4.5 4.5 0 0 1 3-4.24 4.5 4.5 0 0 1 7.5 3.24c0 3-4.5 6-7.5 7.5-3-1.5-7.5-4.5-7.5-7.5a4.5 4.5 0 0 1 4.5-4.5c.78 0 1.5.2 2.12.55"/>
+          </svg>
+        </div>
+        <span class="brand-title">Plants and Nature</span>
+      </div>
+
+      <div class="top-center-info">
+        <span class="slide-counter-badge" id="slideCounter">Slide 1 / 16</span>
+        <button class="presentation-timer-btn" id="timerToggleBtn" title="Click to start/pause 7-8 min presentation timer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span id="timerDisplay">00:00 / 07:30</span>
+        </button>
+      </div>
+
+      <div class="top-actions">
+        <!-- Falling Leaves Toggle -->
+        <button class="icon-btn active" id="leavesToggleBtn" onclick="toggleLeavesAnimation()" title="Toggle Falling Leaves Animation">
+          <span id="leavesToggleLabel">🍃 Leaves: On</span>
+        </button>
+
+        <!-- Planet Comparison Document Link -->
+        <a href="PLANET_WITHOUT_PLANTS_COMPARISON.md" target="_blank" class="icon-btn" style="text-decoration:none;" title="Open Detailed Planet Comparison Document">
+          <span>⚖️ Comparison Doc</span>
+        </a>
+
+        <!-- Audio selector -->
+        <div class="audio-controller-widget">
+          <span class="audio-icon-indicator" id="audioStatusIcon" title="Ambient Nature Sounds">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+          </span>
+          <select id="audioModeSelect" class="audio-select" title="Choose Nature Soundscape">
+            <option value="none">Sound: Off</option>
+            <option value="birds">Birds in Forest</option>
+            <option value="water">Gentle Stream</option>
+            <option value="wind">Wind in Leaves</option>
+          </select>
+          <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05" value="0.25" title="Audio Volume">
+          <span id="duckingBadge" class="ducking-indicator">🎙 Ducked</span>
+        </div>
+
+        <!-- Presenter Notes Toggle -->
+        <button class="icon-btn" id="notesToggleBtn" title="Toggle Presenter Notes (Shortcut: P)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Notes (P)</span>
+        </button>
+
+        <!-- Slide Grid View -->
+        <button class="icon-btn" id="gridToggleBtn" title="Slide Overview (Shortcut: G)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>All Slides</span>
+        </button>
+
+        <!-- Fullscreen -->
+        <button class="icon-btn" id="fullscreenBtn" title="Toggle Fullscreen (Shortcut: F)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+
+    <!-- MAIN PRESENTATION STAGE -->
+    <main class="presentation-viewport">
+      <div class="presentation-stage" id="presentationStage">
+
+        <!-- ========================================== -->
+        <!-- SLIDE 1: OPENING - A BARE EARTH (DRY THEME) -->
+        <!-- ========================================== -->
+        <section class="slide slide-dry-theme active" data-slide="1" data-target-sec="45">
+          <div class="bare-earth-container">
+            <div>
+              <div class="slide-badge dry-badge">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span>The Arid Earth • Completely Plant-Free</span>
+              </div>
+              <h1 class="slide-title dry-title">“Aren’t these beautiful?”</h1>
+              <p class="slide-subtitle dry-subtitle">Vast wind-swept sand dunes, sun-baked mineral badlands, and cracked dry clay — striking, yet bone-dry and without a single leaf.</p>
+            </div>
+
+            <div class="bare-earth-grid">
+              <!-- DRY PHOTO 1: Scorched Desert Dunes -->
+              <div class="landscape-card dry-card">
+                <div class="plant-free-pill">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  <span>Zero Plants</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80" 
+                     alt="Dry desert sand dunes with no vegetation" 
+                     loading="eager"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22600%22 height=%22400%22 fill=%22%23c99a6b%22/><path d=%22M0,320 Q150,220 300,280 T600,200 L600,400 L0,400 Z%22 fill=%22%23b07d4f%22/><circle cx=%22480%22 cy=%2290%22 r=%2240%22 fill=%22%23ffdf9e%22/><text x=%2230%22 y=%2250%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2218%22 font-weight=%22bold%22>Sahara Sand Dunes (Zero Plants)</text></svg>'">
+                <div class="img-caption">
+                  <div class="caption-headline">Scorched Desert Dunes</div>
+                  <div class="caption-meta">
+                    <span>☀️ Searing Desert Sun</span> • <span>Endless shifting sand</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DRY PHOTO 2: Harsh Barren Badlands -->
+              <div class="landscape-card dry-card">
+                <div class="plant-free-pill">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  <span>Zero Vegetation</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=800&q=80" 
+                     alt="Sterile sun-baked mineral badlands with zero plants" 
+                     loading="eager"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22600%22 height=%22400%22 fill=%22%23946b45%22/><polygon points=%220,400 150,160 300,400%22 fill=%22%237a5330%22/><polygon points=%22220,400 400,120 580,400%22 fill=%22%235c3c20%22/><polygon points=%22450,400 550,220 600,400%22 fill=%22%237a5330%22/><text x=%2230%22 y=%2250%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2218%22 font-weight=%22bold%22>Barren Mineral Badlands (No Plants)</text></svg>'">
+                <div class="img-caption">
+                  <div class="caption-headline">Barren Mineral Ridges</div>
+                  <div class="caption-meta">
+                    <span>🪨 Death Valley Badlands</span> • <span>Sterile sun-baked stone</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DRY PHOTO 3: Parched Dry Cracked Earth -->
+              <div class="landscape-card dry-card">
+                <div class="plant-free-pill">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  <span>No Moisture • No Roots</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1547234935-80c7145ec969?auto=format&fit=crop&w=800&q=80" 
+                     alt="Severely parched dry cracked clay earth" 
+                     loading="eager"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22600%22 height=%22400%22 fill=%22%23bfa182%22/><path d=%22M50,0 L120,400 M240,0 L200,400 M380,0 L420,400 M0,180 L600,220 M100,100 L300,150 M300,150 L500,80%22 stroke=%22%237c5636%22 stroke-width=%225%22/><text x=%2230%22 y=%2250%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2218%22 font-weight=%22bold%22>Parched Cracked Earth (Zero Life)</text></svg>'">
+                <div class="img-caption">
+                  <div class="caption-headline">Parched Cracked Playa</div>
+                  <div class="caption-meta">
+                    <span>🏜️ Desert Clay Flats</span> • <span>Months without rain</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="interactive-reveal-box dry-box">
+              <span class="reveal-question-text dry-question" id="slide1Question">“Look closely at these three landscapes... What is missing?”</span>
+              <button class="btn-reveal btn-dry-reveal" id="slide1RevealBtn" onclick="toggleSlide1Reveal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+                </svg>
+                <span>Reveal Answer</span>
+              </button>
+              <div id="slide1Answer" style="display: none;" class="reveal-answer-highlight dry-reveal-burst">
+                🌿 Plants!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 2: IMAGINE EARTH WITHOUT PLANTS -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="2" data-target-sec="50">
+          <div>
+            <div class="slide-badge">Core Foundation</div>
+            <h2 class="slide-title">What would Earth look like without plants?</h2>
+            <p class="slide-subtitle">Plants do far more than look pretty. They are the living machinery that makes our planet habitable.</p>
+          </div>
+
+          <div class="pillars-grid">
+            <div class="pillar-card living-glow">
+              <div class="pillar-icon-box">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Oxygen & Breath</h3>
+              <p class="pillar-desc">Through photosynthesis, plants breathe in carbon dioxide and exhale over 100 billion tons of clean oxygen every year.</p>
+            </div>
+
+            <div class="pillar-card living-glow">
+              <div class="pillar-icon-box">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 12h20"/><path d="M20 12v8H4v-8"/><path d="m4 12 8-8 8 8"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">The Base of Food</h3>
+              <p class="pillar-desc">Plants are primary producers. Every meal on Earth—from farm fruits and grains to food eaten by animals—begins with sunlight captured by plants.</p>
+            </div>
+
+            <div class="pillar-card living-glow">
+              <div class="pillar-icon-box">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Soil & Rivers</h3>
+              <p class="pillar-desc">Subterranean root systems weave a dense living mesh that anchors topsoil, prevents devastating landslides, and purifies groundwater.</p>
+            </div>
+
+            <div class="pillar-card living-glow">
+              <div class="pillar-icon-box">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <h3 class="pillar-title">Wildlife & Rain</h3>
+              <p class="pillar-desc">Forests shelter 80% of terrestrial wildlife, while tree canopies sweat moisture into the sky to create inland rain clouds.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 3: INTERACTIVE COMPARISON (WITH VS WITHOUT PLANTS) -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="3" data-target-sec="55">
+          <div class="comparison-layout">
+            <div>
+              <div class="slide-badge" style="background: rgba(2,132,199,0.12); color: var(--color-sky-deep);">Interactive Planetary Comparison</div>
+              <h2 class="slide-title">Planet Earth: With Plants vs. Without Plants</h2>
+              <p class="slide-subtitle">Toggle between our living green world and a planet stripped of plant life to see the stark difference.</p>
+            </div>
+
+            <!-- Comparison Toggle Buttons -->
+            <div class="comparison-toggle-bar">
+              <button class="comp-toggle-btn active mode-with" id="compBtnWith" onclick="setComparisonMode('with')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-9"/><path d="M9 13a4.5 4.5 0 0 1 3-4.24 4.5 4.5 0 0 1 7.5 3.24c0 3-4.5 6-7.5 7.5-3-1.5-7.5-4.5-7.5-7.5a4.5 4.5 0 0 1 4.5-4.5c.78 0 1.5.2 2.12.55"/></svg>
+                <span>🌱 Earth With Plants (Today)</span>
+              </button>
+              <button class="comp-toggle-btn" id="compBtnWithout" onclick="setComparisonMode('without')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span>💀 Earth Without Plants (Desert)</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Comparison Cards Grid -->
+            <div class="comparison-grid" id="comparisonGrid">
+              <!-- Dynamically populated by app.js -->
+            </div>
+
+            <div class="comparison-banner-footer">
+              <span id="compFooterSummary">🌱 <strong>Living Reality:</strong> Plants regulate atmospheric gases, protect rivers, and sustain all animal life.</span>
+              <a href="PLANET_WITHOUT_PLANTS_COMPARISON.md" target="_blank" class="icon-btn" style="text-decoration:none; background: rgba(56,124,83,0.15); color: var(--color-forest-deep); font-weight:600;">
+                <span>📖 Open Full Comparison File</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 4: A FICTIONAL WARNING (WALL-E) -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="4" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Fictional Perspective</div>
+            <h2 class="slide-title">A Fictional Warning: The Story of WALL-E</h2>
+            <p class="slide-subtitle">Not a grim prediction of the future, but a gentle reminder of what we take for granted.</p>
+          </div>
+
+          <div class="walle-layout">
+            <div class="walle-text-content">
+              <p style="font-size: 1.1rem; line-height: 1.6; color: var(--color-forest-deep);">
+                In the animated film <strong>WALL-E</strong>, centuries have passed without a single leaf or petal on Earth. The surface has become a desolate desert of scrap and silence.
+              </p>
+              <div class="quote-callout">
+                “Then, inside an old discarded work boot, a lonely little robot discovers something miraculous: one solitary, green seedling.”
+              </div>
+              <p style="font-size: 1rem; line-height: 1.55; color: var(--color-text-muted);">
+                That fragile green shoot was not just a plant. It was proof that Earth was still alive, and it inspired humanity to return, take responsibility, and nurture the soil back to life.
+              </p>
+            </div>
+
+            <div class="walle-visual-card">
+              <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" 
+                   alt="Fragile green plant seedling in barren ground"
+                   onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22600%22 height=%22400%22 fill=%22%232c251f%22/><path d=%22M300,320 Q290,260 270,230 Q295,220 300,200 Q305,220 330,230 Q310,260 300,320 Z%22 fill=%22%2352b788%22/><ellipse cx=%22260%22 cy=%22225%22 rx=%2225%22 ry=%2214%22 fill=%22%2374c69d%22 transform=%22rotate(-20 260 225)%22/><ellipse cx=%22340%22 cy=%22225%22 rx=%2225%22 ry=%2214%22 fill=%22%2374c69d%22 transform=%22rotate(20 340 225)%22/></svg>'">
+              <div class="seedling-badge-overlay">
+                🌱 <strong>The Seedling in the Boot:</strong> Even when the world feels dry and forgotten, life waits for a single drop of water and human care.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 5: MYSTERY ACTIVITY INTRO -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="5" data-target-sec="35">
+          <div>
+            <div class="slide-badge">Interactive Classroom Activity</div>
+            <h2 class="slide-title">Mystery Plant Challenge: Use Your Senses!</h2>
+            <p class="slide-subtitle">I am passing around mystery pouches containing leaves and flowers. Before we reveal each slide, can you guess what is inside?</p>
+          </div>
+
+          <div class="mystery-intro-grid">
+            <div class="sensory-steps">
+              <div class="sensory-step-item">
+                <div class="step-num-bubble">1</div>
+                <div>
+                  <h4 style="font-weight: 700; color: var(--color-forest-deep); margin-bottom: 2px;">Touch & Texture</h4>
+                  <p style="font-size: 0.9rem; color: var(--color-text-muted);">Feel the leaf. Is it leathery and thick, paper-thin, soft and fuzzy, or waxy?</p>
+                </div>
+              </div>
+
+              <div class="sensory-step-item">
+                <div class="step-num-bubble">2</div>
+                <div>
+                  <h4 style="font-weight: 700; color: var(--color-forest-deep); margin-bottom: 2px;">Aroma & Scent</h4>
+                  <p style="font-size: 0.9rem; color: var(--color-text-muted);">Gently crush an edge. Do you smell refreshing mint, spicy clove, earthy bitterness, or floral sweetness?</p>
+                </div>
+              </div>
+
+              <div class="sensory-step-item">
+                <div class="step-num-bubble">3</div>
+                <div>
+                  <h4 style="font-weight: 700; color: var(--color-forest-deep); margin-bottom: 2px;">Shape & Edges</h4>
+                  <p style="font-size: 0.9rem; color: var(--color-text-muted);">Look at the margins. Are they smooth and oval, or jagged like the teeth of a tiny saw?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mystery-box-graphic">
+              <div class="mystery-icon-pulse">🌿❓</div>
+              <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 8px;">Mystery Pouches Challenge</h3>
+              <p style="font-size: 0.95rem; opacity: 0.9; max-width: 320px;">Examine pouch #1 with your team now. Listen to the clue on the next slide!</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 6: MYSTERY PLANT 1 - BANYAN -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="6" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #1</div>
+            <h2 class="slide-title">Mystery Pouch #1: The Walking Giant</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 01</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Examine leaf & roots</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “I am a massive tree whose branches send down woody 'aerial roots' that root into the earth, allowing a single tree to expand into what looks like an entire forest.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-banyan" onclick="togglePlantReveal('banyan')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-banyan">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #1 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Banyan Tree</h3>
+                    <div class="plant-scientific-name">Ficus benghalensis • National Tree of India</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ficus%20benghalensis%20in%20Lahore.jpg?width=800" 
+                         alt="Majestic Banyan tree Ficus benghalensis with hanging aerial prop roots"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%231d3826%22/><circle cx=%22200%22 cy=%22140%22 r=%22110%22 fill=%22%232d6a4f%22/><circle cx=%22130%22 cy=%22130%22 r=%2280%22 fill=%22%2340916c%22/><circle cx=%22270%22 cy=%22130%22 r=%2280%22 fill=%22%2352b788%22/><rect x=%22180%22 y=%22180%22 width=%2240%22 height=%22220%22 fill=%22%236b4423%22/><line x1=%22120%22 y1=%22170%22 x2=%22120%22 y2=%22400%22 stroke=%22%238c5e34%22 stroke-width=%2210%22/><line x1=%22280%22 y1=%22170%22 x2=%22280%22 y2=%22400%22 stroke=%22%238c5e34%22 stroke-width=%2210%22/><text x=%22200%22 y=%22380%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22>Banyan Tree (Aerial Prop Roots)</text></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">Cherished across Asia for expansive, cooling canopy shade that shelters village gatherings; tough aerial roots were traditionally woven into durable cordage.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">The Great Banyan of Kolkata covers more than 3.5 acres (14,000 m²) with over 3,700 aerial roots. It looks like a huge forest, but is a single tree!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 7: MYSTERY PLANT 2 - NEEM -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="7" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #2</div>
+            <h2 class="slide-title">Mystery Pouch #2: The Bitter Guardian</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 02</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Smell and examine edges</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “I have slender, curved leaflets with jagged saw-tooth edges. I have an unmistakably sharp, bitter aroma, and garden pests refuse to eat me.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-neem" onclick="togglePlantReveal('neem')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-neem">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #2 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Neem Tree</h3>
+                    <div class="plant-scientific-name">Azadirachta indica • The "Village Pharmacy"</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Azadirachta%20indica%20leaves.jpg?width=800" 
+                         alt="Neem tree Azadirachta indica compound serrated leaves"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%231d3826%22/><path d=%22M200,380 Q190,200 200,40%22 stroke=%22%23708e58%22 stroke-width=%226%22 fill=%22none%22/><path d=%22M200,90 Q270,70 310,110 Q260,115 200,90 Z%22 fill=%22%2352b788%22/><path d=%22M200,90 Q130,70 90,110 Q140,115 200,90 Z%22 fill=%22%2352b788%22/><path d=%22M200,160 Q280,140 330,190 Q270,195 200,160 Z%22 fill=%22%2340916c%22/><path d=%22M200,160 Q120,140 70,190 Q130,195 200,160 Z%22 fill=%22%2340916c%22/><path d=%22M200,240 Q290,220 340,280 Q270,280 200,240 Z%22 fill=%22%232d6a4f%22/><path d=%22M200,240 Q110,220 60,280 Q130,280 200,240 Z%22 fill=%22%232d6a4f%22/><text x=%22200%22 y=%22380%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22>Neem (Serrated Leaflets)</text></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">Traditionally used for natural oral hygiene (chewing neem twigs) and as an eco-friendly organic pest deterrent to protect crops and stored grains without harmful chemicals.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">During devastating desert locust swarms that devour every green leaf in sight, locusts will land on neem trees and refuse to bite due to a natural deterrent called <em>azadirachtin</em>!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 8: MYSTERY PLANT 3 - HIBISCUS -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="8" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #3</div>
+            <h2 class="slide-title">Mystery Pouch #3: The Crimson Trumpet</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 03</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Examine petals & stamen</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “I bloom with large, trumpet-shaped ruby petals and a long, golden pollen-covered tube reaching out from my center.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-hibiscus" onclick="togglePlantReveal('hibiscus')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-hibiscus">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #3 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Hibiscus (Gudhal)</h3>
+                    <div class="plant-scientific-name">Hibiscus rosa-sinensis • China Rose</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://images.unsplash.com/photo-1550950158-d0d960dff51b?auto=format&fit=crop&w=400&q=80" 
+                         alt="Vibrant red hibiscus flower"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22 viewBox=%220 0 300%22><rect width=%22300%22 height=%22300%22 fill=%22%23253b2f%22/><circle cx=%22150%22 cy=%22150%22 r=%2275%22 fill=%22%23e63946%22/><line x1=%22150%22 y1=%22150%22 x2=%22220%22 y2=%2290%22 stroke=%22%23ffb703%22 stroke-width=%226%22/></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">Dried petals and calyces brew into a tart, refreshing ruby-red herbal tea (Agua de Jamaica) rich in vitamin C; extracts are also traditionally used in botanical hair rinses.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">In Polynesian and Hawaiian tradition, wearing a hibiscus behind your left ear means you are happily taken, while behind your right ear means you are open to love!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 9: MYSTERY PLANT 4 - TULSI -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="9" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #4</div>
+            <h2 class="slide-title">Mystery Pouch #4: The Sacred Herbal Queen</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 04</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Crush gently and smell</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “I am a compact leafy plant with purple-tinted stems and a warm, peppery clove fragrance that fills home courtyards each morning.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-tulsi" onclick="togglePlantReveal('tulsi')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-tulsi">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #4 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Tulsi (Holy Basil)</h3>
+                    <div class="plant-scientific-name">Ocimum tenuiflorum • The Incomparable One</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ocimum%20tenuiflorum2.jpg?width=800" 
+                         alt="Fresh aromatic Holy Basil Tulsi plant with purple flower spikes"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%231d3826%22/><path d=%22M200,380 L200,100%22 stroke=%22%236b3f7a%22 stroke-width=%228%22/><ellipse cx=%22150%22 cy=%22260%22 rx=%2245%22 ry=%2225%22 fill=%22%2340916c%22 transform=%22rotate(-25 150 260)%22/><ellipse cx=%22250%22 cy=%22260%22 rx=%2245%22 ry=%2225%22 fill=%22%2340916c%22 transform=%22rotate(25 250 260)%22/><ellipse cx=%22140%22 cy=%22190%22 rx=%2240%22 ry=%2222%22 fill=%22%2352b788%22 transform=%22rotate(-20 140 190)%22/><ellipse cx=%22260%22 cy=%22190%22 rx=%2240%22 ry=%2222%22 fill=%22%2352b788%22 transform=%22rotate(20 260 190)%22/><rect x=%22195%22 y=%2250%22 width=%2210%22 height=%2260%22 fill=%22%23a855f7%22 rx=%225%22/><circle cx=%22200%22 cy=%2255%22 r=%226%22 fill=%22%23d8b4fe%22/><circle cx=%22194%22 cy=%2275%22 r=%226%22 fill=%22%23d8b4fe%22/><circle cx=%22206%22 cy=%2290%22 r=%226%22 fill=%22%23d8b4fe%22/><text x=%22200%22 y=%22380%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22>Tulsi / Holy Basil</text></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">Brewed into a warm, soothing herbal infusion enjoyed for comfort during cold weather; traditionally planted near doorways as a beloved botanical companion.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">Tulsi's aromatic leaves naturally emit volatile oils (like eugenol) that deter mosquitoes, and it releases oxygen for up to 20 hours a day!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 10: MYSTERY PLANT 5 - PEEPAL TREE -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="10" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #5</div>
+            <h2 class="slide-title">Mystery Pouch #5: The Whispering Bodhi Tree</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 05</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Look at the leaf tip & veins</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “My heart-shaped leaves have an elegant, slender elongated 'drip tip' that flutters in the slightest breeze. I am celebrated for releasing oxygen day and night.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-peepal" onclick="togglePlantReveal('peepal')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-peepal">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #5 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Peepal Tree (Sacred Fig)</h3>
+                    <div class="plant-scientific-name">Ficus religiosa • The Bodhi Tree</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ficus%20religiosa%20leaves.jpg?width=800" 
+                         alt="Peepal Sacred Fig Ficus religiosa leaf with distinctive elongated drip tip"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%231d3826%22/><path d=%22M200,60 C260,110 330,170 300,260 C280,310 200,340 200,380 C200,340 120,310 100,260 C70,170 140,110 200,60 Z%22 fill=%22%2352b788%22/><path d=%22M200,60 L200,30%22 stroke=%22%2352b788%22 stroke-width=%224%22/><line x1=%22200%22 y1=%2260%22 x2=%22200%22 y2=%22350%22 stroke=%22%2386efac%22 stroke-width=%223%22/><path d=%22M200,120 Q240,150 270,140 M200,170 Q250,200 280,190 M200,220 Q240,250 260,250 M200,120 Q160,150 130,140 M200,170 Q150,200 120,190 M200,220 Q160,250 140,250%22 stroke=%22%2386efac%22 stroke-width=%222%22 fill=%22none%22/><text x=%22200%22 y=%22385%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22>Peepal (Bodhi Drip-Tip)</text></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">Historically revered as the Bodhi meditation tree under which Buddha sat; its wide canopy serves as a community gathering space and its bark is traditionally valued in herbal wellness.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">Peepal utilizes Crassulacean Acid Metabolism (CAM) photosynthesis, allowing it to capture carbon dioxide and release oxygen around the clock, even during the night!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 11: MYSTERY PLANT 6 - SNAKE PLANT -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="11" data-target-sec="45">
+          <div>
+            <div class="slide-badge">Mystery Plant #6</div>
+            <h2 class="slide-title">Mystery Pouch #6: The Nighttime Air Purifier</h2>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 06</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Examine vertical sword shape & pattern</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text">
+                    “I have stiff, upright sword-shaped leaves with golden-yellow margins and green tiger-stripe patterns. I am famous for releasing oxygen and purifying indoor air while you sleep.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-snakeplant" onclick="togglePlantReveal('snakeplant')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-snakeplant">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #6 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name">Snake Plant (Sansevieria)</h3>
+                    <div class="plant-scientific-name">Dracaena trifasciata • Mother-in-Law's Tongue</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img src="https://images.unsplash.com/photo-1529788110769-7824a528ec58?auto=format&fit=crop&w=800&q=80" 
+                         alt="Snake Plant Sansevieria trifasciata upright striped leaves with yellow borders"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%231a3828%22/><path d=%22M150,380 C150,220 180,120 180,40 C180,120 210,220 210,380 Z%22 fill=%22%232d6a4f%22 stroke=%22%23fbbf24%22 stroke-width=%226%22/><path d=%22M100,380 C105,250 135,160 130,90 C135,160 160,250 160,380 Z%22 fill=%22%2340916c%22 stroke=%22%23fbbf24%22 stroke-width=%225%22/><path d=%22M200,380 C205,250 240,160 250,90 C240,160 270,250 260,380 Z%22 fill=%22%2352b788%22 stroke=%22%23fbbf24%22 stroke-width=%225%22/><line x1=%22165%22 y1=%22140%22 x2=%22195%22 y2=%22140%22 stroke=%22%231b4332%22 stroke-width=%224%22/><line x1=%22165%22 y1=%22220%22 x2=%22195%22 y2=%22220%22 stroke=%22%231b4332%22 stroke-width=%224%22/><text x=%22200%22 y=%22380%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22>Snake Plant (Sansevieria)</text></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body">One of the most popular low-maintenance indoor plants; documented by NASA clean air research for removing indoor airborne toxins like formaldehyde while thriving on minimal water.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body">Unlike almost all daytime plants, the Snake Plant uses Crassulacean Acid Metabolism (CAM) to perform gas exchange at night—absorbing CO₂ and pumping out fresh oxygen while you sleep!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 12: MYSTERY PLANT 7 - EDITABLE / CUSTOM -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="12" data-target-sec="35">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div class="slide-badge">Mystery Plant #7 • Customizable</div>
+              <h2 class="slide-title" id="customPlantTitle">Mystery Pouch #7: Add Your Own Plant</h2>
+            </div>
+            <button class="icon-btn" onclick="openEditCustomPlantModal()" title="Edit this plant or add details">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span>Edit / Add Plant</span>
+            </button>
+          </div>
+
+          <div class="plant-reveal-layout">
+            <div class="plant-mystery-side">
+              <div>
+                <div class="mystery-badge-row">
+                  <span class="pouch-tag">POUCH 07</span>
+                  <span style="font-size: 0.82rem; color: var(--color-text-muted);">Editable classroom slot</span>
+                </div>
+
+                <div class="clue-box">
+                  <div class="clue-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Identification Clue
+                  </div>
+                  <div class="clue-text" id="customPlantClue">
+                    “An open slot for your classroom presentation! Click 'Edit / Add Plant' above to type in your own leaf clue, common use, and memorable fact.”
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-action-panel">
+                <button class="btn-reveal" id="revealBtn-custom" onclick="togglePlantReveal('custom')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Reveal Plant Answer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="plant-revealed-side is-hidden" id="card-custom">
+              <div class="unrevealed-overlay">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🔒</div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-forest-deep); margin-bottom: 4px;">Pouch #7 Locked</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Click "Reveal Plant Answer" when the classroom has shared their guesses.</p>
+              </div>
+
+              <div class="revealed-content">
+                <div class="revealed-header">
+                  <div>
+                    <h3 class="plant-main-name" id="customPlantName">Mint (Pudina)</h3>
+                    <div class="plant-scientific-name" id="customPlantSci">Mentha spicata • Spearmint</div>
+                  </div>
+                  <span class="slide-badge" style="margin:0; background: rgba(56,124,83,0.15);">Identified</span>
+                </div>
+
+                <div class="revealed-media-grid">
+                  <div class="plant-thumbnail-box">
+                    <img id="customPlantImg" src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=400&q=80" 
+                         alt="Fresh green aromatic mint leaves"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22 viewBox=%220 0 300 300%22><rect width=%22300%22 height=%22300%22 fill=%22%231d3826%22/><circle cx=%22150%22 cy=%22150%22 r=%2270%22 fill=%22%2352b788%22/><circle cx=%22110%22 cy=%22110%22 r=%2245%22 fill=%22%2340916c%22/><circle cx=%22190%22 cy=%22110%22 r=%2245%22 fill=%22%2340916c%22/></svg>'">
+                  </div>
+                  <div class="info-cards-stack">
+                    <div class="fact-item-card">
+                      <div class="fact-title">🌿 Common Use & Benefit</div>
+                      <div class="fact-body" id="customPlantBenefit">A beloved aromatic culinary herb used worldwide for soothing digestive teas, refreshing cold drinks, and cooling aromatherapy.</div>
+                    </div>
+                    <div class="fact-item-card fact-surprising">
+                      <div class="fact-title">💡 Surprising Fact</div>
+                      <div class="fact-body" id="customPlantFact">Mint contains natural menthol, which triggers the TRPM8 cold-sensing receptors in human skin and tongue, tricking your brain into feeling ice-cold even in hot weather!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 13: MOUNTAINS AND BEAUTIFUL NATURE (REAL VIDEO) -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="13" data-target-sec="45">
+          <div>
+            <div class="slide-badge">The Grand Tapestry</div>
+            <h2 class="slide-title">Beyond the Leaf: The Majesty of Mountains</h2>
+            <p class="slide-subtitle">When millions of trees and plants unite, they clothe mountain peaks, birth fresh rivers, and regulate the climate of our entire world.</p>
+          </div>
+
+          <div class="mountain-video-container" id="mountainVideoWrapper">
+            <!-- Center Big Play Button Overlay -->
+            <div class="video-play-center-btn" id="centerVideoPlayBtn" onclick="window.presentation && window.presentation.toggleMountainVideo()" title="Click to Play Real Mountain Video">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+
+            <!-- Embedded Real High-Definition Mountain Nature Video -->
+            <video class="mountain-video-element" id="mountainVideo" 
+                   preload="metadata" 
+                   loop 
+                   muted 
+                   playsinline 
+                   poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85">
+              <!-- Real high-def aerial footage of alpine mountain peaks & pine forests -->
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-mountain-forest-aerial-view-4286-large.mp4" type="video/mp4">
+              <source src="https://cdn.coverr.co/videos/coverr-misty-mountains-in-the-morning-8032/1080p.mp4" type="video/mp4">
+              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+              Your browser does not support HTML5 video.
+            </video>
+
+            <!-- Still Image Fallback View (gracefully activates if video fails or is paused) -->
+            <div class="mountain-fallback-view" id="mountainFallback">
+              <img class="mountain-fallback-img" 
+                   src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85" 
+                   alt="Breathtaking real mountain sunrise with pine forests and mist"
+                   onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221000%22 height=%22600%22 viewBox=%220 0 1000 600%22><rect width=%221000%22 height=%22600%22 fill=%22%23122b1f%22/><polygon points=%22150,600 450,150 750,600%22 fill=%22%231f4532%22/><polygon points=%22400,600 700,100 1000,600%22 fill=%22%23163324%22/><polygon points=%220,600 200,280 500,600%22 fill=%22%232b5e44%22/></svg>'">
+            </div>
+
+            <!-- Video Custom Controls Overlay -->
+            <div class="video-custom-controls">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="icon-btn" id="mountainPlayBtn" style="padding: 4px 10px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span id="playBtnLabel">Play Video</span>
+                </button>
+                <button class="icon-btn" id="mountainMuteBtn" style="padding: 4px 10px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <span id="videoMuteLabel">Sound Off</span>
+                </button>
+              </div>
+              <div class="video-attribution-pill">
+                🎬 Real Alpine Mountain Pine Forests & Mist • Cinematic Nature Footage
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 14: NATURE AND OUR FEELINGS -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="14" data-target-sec="60" data-duck-audio="true">
+          <div>
+            <div class="slide-badge">Nature & The Human Heart</div>
+            <h2 class="slide-title">Nature and Our Feelings</h2>
+            <p class="slide-subtitle">A small encounter with the wild can gently shift our thoughts and bring quiet comfort.</p>
+          </div>
+
+          <div class="poem-slide-layout">
+            <div class="poem-parchment">
+              <div class="poem-title-heading">“Dust of Snow”</div>
+              <div class="poem-author-byline">By Robert Frost (1923)</div>
+              
+              <div class="poem-body-text">
+The way a crow
+Shook down on me
+The dust of snow
+From a hemlock tree
+
+Has given my heart
+A change of mood
+And saved some part
+Of a day I had rued.
+              </div>
+            </div>
+
+            <div class="poem-reflection-side">
+              <div class="reflection-point-card">
+                <h4>
+                  <span style="color:var(--color-leaf-primary);">🍃</span> An Unexpected Blessing
+                </h4>
+                <p>Crows and hemlock trees were traditionally associated with sorrow or poison. Yet, in this simple moment, their gentle flurry of white snow rescues the poet's bitter day.</p>
+              </div>
+
+              <div class="reflection-point-card">
+                <h4>
+                  <span style="color:var(--color-sky-primary);">💧</span> A Gentle Perspective
+                </h4>
+                <p>Nature doesn't pretend to solve every problem in life. But stepping outside, feeling the breeze, and watching leaves dance can give our busy minds space to breathe and heal.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 15: CLOSING & INVITATION TO CARE -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="15" data-target-sec="45">
+          <div class="closing-container">
+            <div>
+              <div class="slide-badge">Closing Reflection</div>
+              <h2 class="closing-big-question">
+                “If one small plant can represent hope for an entire planet, what can each of us do to help that hope grow?”
+              </h2>
+            </div>
+
+            <div class="closing-actions-trio">
+              <div class="action-card living-glow">
+                <div class="action-icon-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                  </svg>
+                </div>
+                <h3 class="action-title">1. Notice</h3>
+                <p class="action-desc">Pause on your walk home. Look at the intricate veins of a leaf, the morning dew, or the shade overhead.</p>
+              </div>
+
+              <div class="action-card living-glow">
+                <div class="action-icon-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <h3 class="action-title">2. Respect</h3>
+                <p class="action-desc">Avoid snapping branches or trampling young saplings. Treat every living sprout as an irreplaceable partner on Earth.</p>
+              </div>
+
+              <div class="action-card living-glow">
+                <div class="action-icon-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+                <h3 class="action-title">3. Care</h3>
+                <p class="action-desc">Water a thirsty plant on a windowsill, plant a seed, or keep a small pot of green life thriving in your room.</p>
+              </div>
+            </div>
+
+            <div class="closing-quote-banner">
+              “Notice nature. Respect it. Help it grow.”
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 16: PRESENTATION GUIDE & CREDITS -->
+        <!-- ========================================== -->
+        <section class="slide" data-slide="16" data-target-sec="20">
+          <div>
+            <div class="slide-badge">Presentation Guide & Resources</div>
+            <h2 class="slide-title">Timing Map, Shortcuts & Comparison File</h2>
+            <p class="slide-subtitle">Ready-to-use reference for students and teachers presenting in the classroom.</p>
+          </div>
+
+          <div class="credits-grid">
+            <div class="credit-card">
+              <h4>⏱ 7–8 Minute Timing Guide</h4>
+              <ul style="padding-left: 18px; margin-top: 6px; color: var(--color-text-muted);">
+                <li><strong>Slides 1–4 (Hook, Why & WALL-E):</strong> 2 min 45 s</li>
+                <li><strong>Slides 5–12 (Mystery Plants):</strong> 3 min 15 s</li>
+                <li><strong>Slide 13 (Real Mountain Video):</strong> 45 s</li>
+                <li><strong>Slide 14 (Frost's Poem):</strong> 1 min 00 s</li>
+                <li><strong>Slide 15 (Closing):</strong> 45 s</li>
+                <li><em>Total Target: ~7 min 30 s + 30 s Q&A</em></li>
+              </ul>
+            </div>
+
+            <div class="credit-card">
+              <h4>⌨️ Keyboard Shortcuts</h4>
+              <ul style="padding-left: 18px; margin-top: 6px; color: var(--color-text-muted);">
+                <li><kbd>→</kbd> or <kbd>Space</kbd> : Next Slide</li>
+                <li><kbd>←</kbd> : Previous Slide</li>
+                <li><kbd>P</kbd> or <kbd>N</kbd> : Toggle Presenter Notes</li>
+                <li><kbd>F</kbd> : Fullscreen Mode</li>
+                <li><kbd>G</kbd> : Grid / Jump to Slide</li>
+                <li><kbd>T</kbd> : Start/Pause Timer</li>
+                <li><kbd>M</kbd> : Mute/Unmute Audio</li>
+              </ul>
+            </div>
+
+            <div class="credit-card">
+              <h4>📖 Comparison Document & Media</h4>
+              <ul style="padding-left: 18px; margin-top: 6px; color: var(--color-text-muted);">
+                <li><strong>Detailed Comparison File:</strong> <a href="PLANET_WITHOUT_PLANTS_COMPARISON.md" target="_blank" style="color:var(--color-leaf-primary); font-weight:600;">PLANET_WITHOUT_PLANTS_COMPARISON.md</a></li>
+                <li><strong>Poem:</strong> Robert Frost, <em>Dust of Snow</em> (1923, Public Domain).</li>
+                <li><strong>Real Mountain Video:</strong> Royalty-Free Aerial Alpine Footage.</li>
+                <li><strong>Audio:</strong> Procedural Web Audio API Soundscapes.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- BOTTOM CONTROLS BAR -->
+    <footer class="bottom-control-bar">
+      <div class="nav-buttons-group">
+        <button class="btn-nav" id="prevSlideBtn" title="Previous Slide (Shortcut: Left Arrow)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          <span>Previous</span>
+        </button>
+
+        <button class="btn-nav" id="nextSlideBtn" title="Next Slide (Shortcut: Right Arrow or Space)">
+          <span>Next Slide</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="nav-helper-keys">
+        <span>Use <kbd>→</kbd> <kbd>←</kbd> or <kbd>Spacebar</kbd> to navigate</span>
+        <span>•</span>
+        <span>Press <kbd>P</kbd> for Presenter Notes</span>
+      </div>
+
+      <div>
+        <button class="icon-btn" onclick="goToSlide(15)" style="background: rgba(82, 183, 136, 0.2); border-color: rgba(82, 183, 136, 0.4);">
+          <span>🌱 Conclusion Slide</span>
+        </button>
+      </div>
+    </footer>
+
+    <!-- PRESENTER NOTES DRAWER -->
+    <aside class="presenter-notes-drawer" id="presenterDrawer">
+      <div class="drawer-header">
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Presenter Speaking Script & Cues
+        </h3>
+        <button class="drawer-close-btn" id="closeNotesDrawerBtn" title="Close Notes">&times;</button>
+      </div>
+      <div class="drawer-body" id="presenterNotesContent">
+        <!-- Injected dynamically by app.js based on current slide -->
+      </div>
+    </aside>
+
+    <!-- SLIDE GRID MODAL -->
+    <div class="modal-overlay" id="gridModal">
+      <div class="slide-grid-container">
+        <div class="modal-header">
+          <h3>Jump to Slide</h3>
+          <button class="drawer-close-btn" style="color: #12281d;" onclick="closeGridModal()">&times;</button>
+        </div>
+        <div class="grid-slides-list" id="gridSlidesList">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT CUSTOM PLANT MODAL -->
+    <div class="modal-overlay" id="editPlantModal">
+      <div class="slide-grid-container" style="max-width: 650px;">
+        <div class="modal-header">
+          <h3>Edit Mystery Plant #8</h3>
+          <button class="drawer-close-btn" style="color: #12281d;" onclick="closeEditCustomPlantModal()">&times;</button>
+        </div>
+        <div class="edit-form-grid">
+          <div class="form-field full-width">
+            <label for="editPTitle">Slide Title / Pouch Name</label>
+            <input type="text" id="editPTitle" value="Mystery Pouch #8: Add Your Own Plant">
+          </div>
+          <div class="form-field">
+            <label for="editPName">Plant Common Name</label>
+            <input type="text" id="editPName" value="Mint (Pudina)">
+          </div>
+          <div class="form-field">
+            <label for="editPSci">Scientific Name / Nickname</label>
+            <input type="text" id="editPSci" value="Mentha spicata • Spearmint">
+          </div>
+          <div class="form-field full-width">
+            <label for="editPClue">Identification Clue</label>
+            <textarea id="editPClue">“An open slot for your classroom presentation! Click 'Edit / Add Plant' above to type in your own leaf clue, common use, and memorable fact.”</textarea>
+          </div>
+          <div class="form-field full-width">
+            <label for="editPBenefit">Common Use / Benefit (Carefully phrased)</label>
+            <textarea id="editPBenefit">A beloved aromatic culinary herb used worldwide for soothing digestive teas, refreshing cold drinks, and cooling aromatherapy.</textarea>
+          </div>
+          <div class="form-field full-width">
+            <label for="editPFact">Surprising or Memorable Fact</label>
+            <textarea id="editPFact">Mint contains natural menthol, which triggers the TRPM8 cold-sensing receptors in human skin and tongue, tricking your brain into feeling ice-cold even in hot weather!</textarea>
+          </div>
+          <div class="form-field full-width">
+            <label for="editPImg">Image URL</label>
+            <input type="text" id="editPImg" value="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80">
+          </div>
+        </div>
+        <div style="padding: 16px 20px; border-top: 1px solid var(--color-cream-border); display: flex; justify-content: flex-end; gap: 12px;">
+          <button class="icon-btn" style="background:#e5e7eb; color:#1f2937;" onclick="closeEditCustomPlantModal()">Cancel</button>
+          <button class="btn-reveal" style="flex:none; padding:8px 20px;" onclick="saveCustomPlantDetails()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio Script, Falling Leaves Engine & Application Logic -->
+  <script src="audio.js"></script>
+  <script src="leaves.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
